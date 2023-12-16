@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario Mascotas</title>
+  </head>
+  <body>
+    <form id="petForm" enctype="multipart/form-data">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" />
+      <label for="name">Imagen</label>
+      <input type="file" name="file" id="file" />
+      <input type="submit" value="Submit" />
+    </form>
+    <script>
+      const form = document.getElementById("petForm");
+
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        // const name = document.getElementById("name").value;
+
+        const formData = new FormData(event.target);
+        try {
+          const response = await fetch("/api/pets", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+          console.log(data);
+
+          event.target.reset();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      form.addEventListener("submit", handleSubmit);
+    </script>
+  </body>
+</html>
